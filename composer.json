@@ -4,8 +4,8 @@
     "type": "project",
     "license": "MIT",
     "require": {
-        "php": "^8.4",
-        "phpthis/framework": "0.1.0-alpha.1"
+        "php": "~8.4.0",
+        "phpthis/framework": "0.1.0-alpha.2"
     },
     "require-dev": {
         "phpstan/phpstan": "^2.1",

@@ -4,29 +4,30 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6ae613ef631f7e34e974bbf641cd94e",
+    "content-hash": "2408ce03464613d8e6eada7251e97510",
     "packages": [
         {
             "name": "phpthis/framework",
-            "version": "v0.1.0-alpha.1",
+            "version": "v0.1.0-alpha.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/balgf/PHPThis.git",
-                "reference": "25f54a23df4b3ad2f196bb7bb4ff6eecdf29a443"
+                "reference": "78ad01ad215d25aeaf1f739bd798a3d80ba12093"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/balgf/PHPThis/zipball/25f54a23df4b3ad2f196bb7bb4ff6eecdf29a443",
-                "reference": "25f54a23df4b3ad2f196bb7bb4ff6eecdf29a443",
+                "url": "https://api.github.com/repos/balgf/PHPThis/zipball/78ad01ad215d25aeaf1f739bd798a3d80ba12093",
+                "reference": "78ad01ad215d25aeaf1f739bd798a3d80ba12093",
                 "shasum": ""
             },
             "require": {
                 "ext-pdo": "*",
                 "ext-session": "*",
-                "php": "^8.4"
+                "php": "~8.4.0"
             },
             "require-dev": {
                 "ext-pdo_sqlite": "*",
+                "ext-redis": "^6.3",
                 "phpstan/phpstan": "^2.1",
                 "phpstan/phpstan-strict-rules": "^2.0"
             },
@@ -52,9 +53,9 @@
             ],
             "support": {
                 "issues": "https://github.com/balgf/PHPThis/issues",
-                "source": "https://github.com/balgf/PHPThis/tree/v0.1.0-alpha.1"
+                "source": "https://github.com/balgf/PHPThis/tree/v0.1.0-alpha.2"
             },
-            "time": "2026-07-19T06:25:50+00:00"
+            "time": "2026-07-21T06:38:17+00:00"
         }
     ],
     "packages-dev": [
@@ -124,27 +125,28 @@
         },
         {
             "name": "phpstan/phpstan-strict-rules",
-            "version": "2.0.11",
+            "version": "2.0.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan-strict-rules.git",
-                "reference": "9b000a578b85b32945b358b172c7b20e91189024"
+                "reference": "2bc5ae19ae965663b62ac907ee6342c3903ec93b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/9b000a578b85b32945b358b172c7b20e91189024",
-                "reference": "9b000a578b85b32945b358b172c7b20e91189024",
+                "url": "https://api.github.com/repos/phpstan/phpstan-strict-rules/zipball/2bc5ae19ae965663b62ac907ee6342c3903ec93b",
+                "reference": "2bc5ae19ae965663b62ac907ee6342c3903ec93b",
                 "shasum": ""
             },
             "require": {
                 "php": "^7.4 || ^8.0",
-                "phpstan/phpstan": "^2.1.39"
+                "phpstan/phpstan": "^2.1.52"
             },
             "require-dev": {
                 "php-parallel-lint/php-parallel-lint": "^1.2",
                 "phpstan/phpstan-deprecation-rules": "^2.0",
                 "phpstan/phpstan-phpunit": "^2.0",
-                "phpunit/phpunit": "^9.6"
+                "phpunit/phpunit": "^9.6",
+                "shipmonk/name-collision-detector": "^2.1"
             },
             "type": "phpstan-extension",
             "extra": {
@@ -169,9 +171,9 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan-strict-rules/issues",
-                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.0.11"
+                "source": "https://github.com/phpstan/phpstan-strict-rules/tree/2.0.12"
             },
-            "time": "2026-05-02T06:54:10+00:00"
+            "time": "2026-07-19T07:24:06+00:00"
         }
     ],
     "aliases": [],
@@ -182,7 +184,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.4"
+        "php": "~8.4.0"
     },
     "platform-dev": {},
     "plugin-api-version": "2.9.0"
