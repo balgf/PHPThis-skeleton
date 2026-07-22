@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b1e6caeef7273f6b9b34df198052575a",
+    "content-hash": "86bcdf9adfee887a4a0ae29862eb2068",
     "packages": [
         {
             "name": "phpthis/framework",
-            "version": "v0.1.0-alpha.3",
+            "version": "v0.1.0-alpha.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/balgf/PHPThis.git",
-                "reference": "88885b5f7cd542c84395cd19783f199f130ffc2e"
+                "reference": "f88d6b3af5f185a36a9020ff123fb4bd0f8314d1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/balgf/PHPThis/zipball/88885b5f7cd542c84395cd19783f199f130ffc2e",
-                "reference": "88885b5f7cd542c84395cd19783f199f130ffc2e",
+                "url": "https://api.github.com/repos/balgf/PHPThis/zipball/f88d6b3af5f185a36a9020ff123fb4bd0f8314d1",
+                "reference": "f88d6b3af5f185a36a9020ff123fb4bd0f8314d1",
                 "shasum": ""
             },
             "require": {
@@ -53,9 +53,9 @@
             ],
             "support": {
                 "issues": "https://github.com/balgf/PHPThis/issues",
-                "source": "https://github.com/balgf/PHPThis/tree/v0.1.0-alpha.3"
+                "source": "https://github.com/balgf/PHPThis/tree/v0.1.0-alpha.4"
             },
-            "time": "2026-07-21T11:50:24+00:00"
+            "time": "2026-07-22T16:42:07+00:00"
         }
     ],
     "packages-dev": [
