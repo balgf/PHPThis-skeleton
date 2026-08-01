@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "86bcdf9adfee887a4a0ae29862eb2068",
+    "content-hash": "58692d406fc6705b54e18cd5c8fd811b",
     "packages": [
         {
             "name": "phpthis/framework",
-            "version": "v0.1.0-alpha.4",
+            "version": "v0.1.0-alpha.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/balgf/PHPThis.git",
-                "reference": "f88d6b3af5f185a36a9020ff123fb4bd0f8314d1"
+                "reference": "b0ddd8bbaa36391696348e805adf7ca6e9588ae1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/balgf/PHPThis/zipball/f88d6b3af5f185a36a9020ff123fb4bd0f8314d1",
-                "reference": "f88d6b3af5f185a36a9020ff123fb4bd0f8314d1",
+                "url": "https://api.github.com/repos/balgf/PHPThis/zipball/b0ddd8bbaa36391696348e805adf7ca6e9588ae1",
+                "reference": "b0ddd8bbaa36391696348e805adf7ca6e9588ae1",
                 "shasum": ""
             },
             "require": {
@@ -29,7 +29,8 @@
                 "ext-pdo_sqlite": "*",
                 "ext-redis": "^6.3",
                 "phpstan/phpstan": "^2.1",
-                "phpstan/phpstan-strict-rules": "^2.0"
+                "phpstan/phpstan-strict-rules": "^2.0",
+                "phpunit/phpunit": "^13.0"
             },
             "bin": [
                 "bin/phpthis"
@@ -44,7 +45,7 @@
             "license": [
                 "MIT"
             ],
-            "description": "A checked PHP profile and minimal web framework for AI-authored code.",
+            "description": "A checked PHP profile and minimal web framework for AI-authored code; start applications with phpthis/skeleton.",
             "keywords": [
                 "ai-assisted-development",
                 "php",
@@ -53,19 +54,19 @@
             ],
             "support": {
                 "issues": "https://github.com/balgf/PHPThis/issues",
-                "source": "https://github.com/balgf/PHPThis/tree/v0.1.0-alpha.4"
+                "source": "https://github.com/balgf/PHPThis/tree/v0.1.0-alpha.5"
             },
-            "time": "2026-07-22T16:42:07+00:00"
+            "time": "2026-08-01T13:08:54+00:00"
         }
     ],
     "packages-dev": [
         {
             "name": "phpstan/phpstan",
-            "version": "2.2.5",
+            "version": "2.2.7",
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/909c1e5fef7989ac0d0c1c5c42e32a5c4f6198a0",
-                "reference": "909c1e5fef7989ac0d0c1c5c42e32a5c4f6198a0",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/692db47b9dddb0487934e5236e77d48594aef921",
+                "reference": "692db47b9dddb0487934e5236e77d48594aef921",
                 "shasum": ""
             },
             "require": {
@@ -121,7 +122,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-07-05T06:31:06+00:00"
+            "time": "2026-07-29T17:39:32+00:00"
         },
         {
             "name": "phpstan/phpstan-strict-rules",

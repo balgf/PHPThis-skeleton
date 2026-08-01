@@ -1,10 +1,11 @@
 # Application rules
 
-These rules supplement installed PHPThis Consumer Contract v9 and Strict Profile v2. They may strengthen those rules but may not weaken them.
+These rules supplement installed PHPThis Consumer Contract v10 and Strict Profile v3. They may strengthen those rules but may not weaken them.
 
 ## Required
 
 - Preserve the dependency direction and boundaries in `.ai/architecture.md`.
+- Keep `NOT_APPLICABLE(CONFIGURATION)` while the starter reads no deployment input. Before adoption, keep every direct `\getenv('EXACT_LITERAL_KEY')` call in one recorded PHP file, immediately validate into process-specific final readonly types before application-controlled I/O, and inject only concrete typed values through visible composition.
 - Resolve missing product, scale, authorization, and external-contract facts before implementation.
 - Keep `NOT_APPLICABLE(RESOURCE_ROUTE_IDENTIFIERS)` while the starter has only exact `GET /health`. Before adding a resource identifier, declare the narrowest fixed type: `positive-int`, `uuid`, or `ulid` for that canonical representation, and `token` only when genuinely opaque. Use the matching `PathParameters` accessor, immediately wrap the unchanged value in an application-owned route-specific identifier, and enforce narrower domain rules before database work; never normalize, bind, look up, or fall back between route types.
 - Before adopting a resource identifier route, add tests proving invalid syntax returns `404` with zero handler and database work and a canonical valid path with the wrong method returns `405`.
@@ -13,7 +14,9 @@ These rules supplement installed PHPThis Consumer Contract v9 and Strict Profile
 - Keep `NOT_APPLICABLE(REQUEST_POLICY)` while every route is public. Before protecting a route, use the installed action-specific request-policy composition with explicit order, concrete principal and tenant values, replaceable policies, isolated policy and protected budgets, and denial tests.
 - Keep every external side effect and failure path visible at a named boundary.
 - Keep `NOT_APPLICABLE(WEBSOCKETS)` while the starter has no WebSocket runtime. Before adoption, read `.ai/websockets.md` and record one approved application-owned third-party runtime, separate visible process, exact handshake and current authorization, one bounded final readonly command, one narrowly named typed operation, sequential bounded sends, finite connection and lifecycle policy, redacted connection summary, deployment limits, and real process/socket evidence.
-- Before database adoption, verify and record finite SQL-structure choices, bounded-list shapes, and isolated least-privileged runtime authority in `.ai/data.md`.
+- Keep the exact standalone `NOT_APPLICABLE(DATABASE)` line in `.ai/data.md` while the starter opens no connection. Before database adoption, replace it with the database definition or provisioning source; supported database, catalog, schema, or attachment namespace selection and qualification; the namespace and object control or ownership model or explicit N/A; finite SQL-structure choices; bounded-list shapes; each named operation's exact statement, target, required capability, and prohibited capability; the effective authority resolution source; one non-HTTP activation and deactivation owner and path; and dated exact-engine evidence.
+- Keep `NOT_APPLICABLE(MIGRATIONS)` while the starter has no database or migration directory. On first adoption, prefer the PHPThis recommendation `src/Database/Migrations/` with `App\Database\Migrations`, record the actual adopted directory and namespace in `.ai/migrations.md`, preserve any coherent consumer-selected alternative, and never relocate established migration code without explicit human approval.
+- Activate and verify required database authority before dependent code receives traffic. Stop the dependent rollout stage on failure, and drain or remove dependent code before authority deactivation or removal of a namespace or object it still needs.
 - Preserve the application-owned terminal request-summary coordinator and sink, generated correlation and `X-Request-ID`, at most eight finite distinct database sources, complete redaction, and exactly one failure-isolated sink invocation attempt.
 - Preserve exact current cache policy: `Cache-Control: no-store` for health success, route miss, method rejection, and mapped client failure; `Cache-Control: private, no-store` for unknown failure. Start every response path added later with explicit `no-store`, then adopt `private` or `public` only after recording finite freshness or revalidation, validators, `Vary`, intermediary topology, observability, and tests where applicable.
 - Before cache adoption, verify and record narrowly named typed service ownership, authoritative rebuild paths, backend topology, versioned environment- and tenant-scoped keys, bounded payloads and finite TTLs, invalidation, stale-refill, failure and stampede behavior, observability, and cold, warm, failure, isolation, stale-refill race, and concurrency evidence.
@@ -24,6 +27,7 @@ These rules supplement installed PHPThis Consumer Contract v9 and Strict Profile
 
 - Do not invent schema meaning, production limits, authorization, or external-service behavior.
 - Do not add a generic validator, result wrapper, string-rule language, automatic request binding, reflection hydration, mass assignment, sanitization magic, or unvalidated array beyond its named boundary.
+- Do not scatter configuration reads; add a string-keyed configuration bag, arbitrary getter, global helper, facade, provider, container binding, discovery, automatic dotenv loading, hidden reload, or migration-to-runtime credential fallback.
 - Do not parse the same inbound representation again downstream, silently transform or coerce an application field, or treat validation as output encoding or authorization.
 - Do not add an undocumented side effect, retry, fallback, cache, queue, or scheduled operation.
 - Do not add application commands to framework `phpthis`, command discovery, class-name dispatch, a service-container command resolver, generic console or scheduler facade, daemon, hidden loop, persistent slot behavior, catch-up, or distributed coordination without an accepted application decision and evidence.
@@ -37,6 +41,8 @@ These rules supplement installed PHPThis Consumer Contract v9 and Strict Profile
 - Do not add framework logging event, sink, or coordinator types; logger facades, global logging helpers, generic or framework logging middleware, terminal observability inside an application-owned request-handler decorator, event pipelines, automatic sink discovery, per-query log I/O, hidden database instrumentation, or durable-delivery claims.
 - Do not copy secrets or real customer data into code, context, fixtures, logs, or reports.
 - Do not add runtime-built SQL, an SQL sanitizer, or a runtime database identity with migration or administrative authority.
+- Do not turn the recommended migration directory into checker enforcement, filesystem discovery, automatic registration, or a second migration execution path.
+- Do not add a permission or authority-transition helper, role registry, runtime authority introspection, automatic privilege hook, or inferred broad authority set.
 - Do not claim that PHT006, tenant predicates, adversarial bindings, or base PDO transport tests universally prove authorization, tenant isolation, injection safety, or application-SQL portability.
 - Do not read `$_SESSION`, call native `session_*` functions, manually emit a framework session cookie, or add a generic session helper.
 - Do not add a second spelling or execution path for an existing operation.
@@ -44,6 +50,7 @@ These rules supplement installed PHPThis Consumer Contract v9 and Strict Profile
 ## Starter constraints
 
 - Keep `GET /health` exact until the project deliberately changes its liveness contract.
+- Keep `NOT_APPLICABLE(CONFIGURATION)` until one external input is introduced and its complete typed boundary replaces that marker in `.ai/configuration.md`; the starter includes no configuration PHP or environment read.
 - Keep `NOT_APPLICABLE(INPUT)` until an operation accepts application-owned external fields and its boundary policy and adversarial tests replace that marker in `.ai/architecture.md` and `.ai/testing.md`.
 - Keep `NOT_APPLICABLE(WEBSOCKETS)` until the selected runtime, process, handshake, current policy, message and connection bounds, backpressure, lifecycle, redaction, deployment, and real process/socket evidence replace that marker across `.ai/websockets.md`, `.ai/architecture.md`, `.ai/integrations.md`, `.ai/operations.md`, and `.ai/testing.md`; the starter includes no WebSocket code or dependency.
 - Keep session state not applicable until its typed key ownership, cookie, isolated file-storage, and concurrency policy are recorded, together with each applicable identity, expiry, revocation, and CSRF concern or explicit non-applicability.
@@ -51,4 +58,6 @@ These rules supplement installed PHPThis Consumer Contract v9 and Strict Profile
 - Keep the `no-store` directive in every currently shipped response and preserve `private` on the generic unknown-failure response. A new path owns and tests its explicit policy before replacing `no-store`; server-side caching remains a separate decision.
 - Keep `NOT_APPLICABLE(CACHE)` until the cache contract is recorded across `.ai/architecture.md`, `.ai/data.md`, `.ai/integrations.md`, `.ai/operations.md`, and `.ai/testing.md`; the starter includes no cache code or dependency.
 - Keep `NOT_APPLICABLE(CLI)` until the sole console, command and argument grammar, exit and stream contract, clock and cadence, one-pass behavior, overlap topology, supervisor, redaction, and real-console tests are recorded; the starter includes no operational console or scheduler.
+- Keep `NOT_APPLICABLE(DATABASE)` as the exact standalone line in `.ai/data.md` until the database contract is adopted; configuration-only scope does not replace it and the starter includes no direct canonical `Connection::connect` call.
+- Keep `NOT_APPLICABLE(MIGRATIONS)` until application-owned database evolution is adopted; the starter includes no migration directory or namespace.
 - Replace these starter constraints with verified product constraints before feature work.
