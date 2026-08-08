@@ -9,8 +9,17 @@
 
 ## Dependency direction
 
+This diagram records construction and dependency ownership, not request-time control flow.
+
 ```text
-public/index.php -> bootstrap.php -> TerminalRequestCoordinator -> RequestBoundary -> Routes -> HealthRoutes -> HealthHandler -> Response -> RequestSummarySink -> ResponseEmitter
+public/index.php
+├── requires bootstrap.php -> TerminalRequestCoordinator
+│   ├── RequestBoundary -> Application -> Router
+│   │   └── Routes -> HealthRoutes -> dependency-free HealthHandler
+│   ├── UnknownFailureBoundary
+│   ├── CorrelationId
+│   └── RequestSummarySink
+└── constructs ResponseEmitter
 ```
 
 Dependencies may point only in the direction shown above. Record a deliberate exception in `docs/decisions/` before implementation.
@@ -22,7 +31,7 @@ Dependencies may point only in the direction shown above. Record a deliberate ex
 | HTTP runtime | `public/index.php` | Load request-scoped composition, read PHP runtime globals, invoke the terminal coordinator, and emit its unchanged response. |
 | Application configuration | `.ai/configuration.md` | Owns the health-only `NOT_APPLICABLE(CONFIGURATION)` marker and any later external-input-to-typed-value contract. |
 | WebSocket runtime | `NOT_APPLICABLE(WEBSOCKETS)` | The health-only starter has no WebSocket process, listener, protocol, or connection state. |
-| Application-owned request-handler decorators | `NOT_APPLICABLE(REQUEST_HANDLER_DECORATOR)` | `HealthHandler` is constructed directly for the sole route. |
+| Application-owned request-handler decorators | `NOT_APPLICABLE(REQUEST_HANDLER_DECORATOR)` | `HealthRoutes` constructs dependency-free `HealthHandler` inline for the sole route. |
 | Terminal request summary | `src/Observability/` | Own correlation, finite database-source observation, the closed redacted event, one injected sink, and failure-isolated attempt semantics. |
 | Inbound operation data | `NOT_APPLICABLE(INPUT)` | The public health operation accepts no application-owned fields and constructs no request or command. |
 | Typed session services | `NOT_APPLICABLE` | The starter does not configure session state. |
@@ -39,7 +48,9 @@ Dependencies may point only in the direction shown above. Record a deliberate ex
 
 `NOT_APPLICABLE(INPUT)`: `GET /health` accepts no application-owned body, query, form, or header fields. The outer `RequestBoundary` still bounds and validates PHP runtime transport data, but no operation-specific parser or typed command is needed for this health-only state.
 
-Before an operation accepts external data, record one path from its bounded raw representation through an operation-specific named parser factory into a final readonly request or command with a private constructor, then into downstream typed behavior. Add a separate typed operation seam only when HTTP adaptation and an independently meaningful business or transaction responsibility need separate ownership. Record byte, depth, field, list, item, and scalar bounds; required, optional, absent, explicit-null, and unknown-field behavior; exact boolean, integer, string, enum, date, list, and object representations; deterministic validation order; field-specific normalization or explicit none; parser position relative to request policy; generic public failure and redaction; exclusion from operation-owned downstream work; and the native JSON duplicate-key limitation where applicable. Do not add a generic validator, result wrapper, rule-string language, reflection hydration, mass assignment, sanitization magic, or automatic request binding.
+Before an operation accepts external data, record one path from its bounded raw representation through an operation-specific named parser factory into a final readonly request or command with a private constructor, then into downstream typed behavior. Add a separate typed operation seam only when HTTP adaptation and an independently meaningful business or transaction responsibility need separate ownership. Record byte, depth, field, list, item, and scalar bounds; required, optional, absent, explicit-null, and unknown-field behavior; exact boolean, integer, string, enum, date, list, and object representations; deterministic validation order; field-specific normalization or explicit none; parser position relative to request policy; public failure and redaction; exclusion from operation-owned downstream work; and the native JSON duplicate-key limitation where applicable.
+
+For application-owned structured request-body content, the parser completes the whole exact-field, nullability, native-type, and nested-shape phase before applying any value grammar, range, length, enum, date, canonical-representation, or cross-field rule. The default public contract maps the first phase to generic `400 invalid_request` and a failure after that complete phase to an exact application-owned exception registered as generic `422 unprocessable_content`; a payload containing both an unacceptable value and another wrong-typed field remains `400`. Record any deliberate application override explicitly. Query, header, route, and transport representations retain their separately recorded contracts. Keep `413` whole-body overflow, `415` unsupported media, persisted-state conflicts, request policy, routing, multipart transport, and unexpected failures separate. Both body responses omit submitted field names and values, credentials, internal messages, and rule details. Do not add a core unacceptable-value exception, generic validator, result wrapper, rule-string language, reflection hydration, mass assignment, error renderer, sanitization magic, or automatic request binding.
 
 ## Optional application-owned WebSockets
 
@@ -49,7 +60,7 @@ Before adoption, read installed `vendor/phpthis/framework/docs/websockets.md` an
 
 ## Optional application-owned request-handler decorators
 
-`NOT_APPLICABLE(REQUEST_HANDLER_DECORATOR)`: `src/Routes.php` constructs `HealthHandler` directly. The starter has no route-local wrapping concern, decorator side effect, early response, response replacement, or nesting order.
+`NOT_APPLICABLE(REQUEST_HANDLER_DECORATOR)`: `src/HealthRoutes.php` constructs dependency-free `HealthHandler` inline in the exact route declaration; `src/Routes.php` only includes that existing named route-area list. The starter has no route-local wrapping concern, decorator side effect, early response, response replacement, or nesting order.
 
 Before adoption, record every final application-owned request-handler decorator, its one downstream `RequestHandler`, affected routes, complete unrolled outer-to-inner construction, zero-or-one delegation with the exact same immutable `Request` instance, unchanged exception propagation, explicit immutable `Response` replacement with complete field preservation, and named bounded side effects and tests. Do not add a generic or framework middleware interface, pipeline, iterable registry, priorities, discovery, `$next` abstraction, context bag, hidden binding, or hidden I/O. Never wrap `Application`, `RequestBoundary`, the terminal coordinator, or `ResponseEmitter`, and do not move session, cache, request-policy, or terminal-observability ownership into a decorator.
 
@@ -64,7 +75,20 @@ Before protecting a route, record its named action, concrete principal and tenan
 
 ## Terminal request summary
 
-`.ai/observability.md` is the single project authority for starter correlation, source registration, sink, scope, and evidence facts. The architecture constraint is `public/index.php -> bootstrap.php -> TerminalRequestCoordinator -> RequestBoundary -> selected Response -> RequestSummarySink -> ResponseEmitter`; the types remain application-owned under `src/Observability/`.
+`.ai/observability.md` is the single project authority for starter correlation, source registration, sink, scope, and evidence facts. The types remain application-owned under `src/Observability/`.
+
+Request-time control flow is separate from dependency ownership:
+
+```text
+public/index.php
+  -> TerminalRequestCoordinator::handle(...)
+     -> RequestBoundary::handle(...) -> selected Response
+     -> RequestSummarySink::emit(...) (one failure-isolated attempt)
+     <- returns the selected Response
+  -> ResponseEmitter::emit(...) with the returned Response
+```
+
+The coordinator invokes the request boundary and sink, then returns the selected response. The front controller separately gives that returned response to `ResponseEmitter`; the coordinator does not own or invoke the emitter, and the sink is not downstream of `Response` in the dependency graph.
 
 ## Cache policies
 
@@ -82,9 +106,13 @@ Before protecting a route, record its named action, concrete principal and tenan
 
 Before adding resource behavior, record adoption of or one coherent alternative to `vendor/phpthis/framework/docs/crud.md`, plus the identifier, explicit route, authorization, and audit policy. Every resource path identifier uses the narrowest fixed declaration: `positive-int`, `uuid`, or `ulid` for that canonical representation, and `token` only for a genuinely opaque identifier. Record the matching `PathParameters::positiveInteger()`, `uuid()`, `ulid()`, or `token()` accessor, the application-owned route-specific identifier that immediately wraps the unchanged value, and any narrower domain rule enforced before database work. Routing performs no normalization, domain binding, record lookup, identifier generation, persistence choice, or type fallback. An alternate layout cannot weaken the installed consumer contract or Strict Profile.
 
+Before exposing one resource through a second access surface, record the selected surface-grouping rule and permitted sharing here. Give every surface its own named route-area list with explicit route entries. Separate its action-specific policy composition when authentication, named authorization action, tenant resolution, or policy budget or trace differs. Separate its HTTP handler and boundary types when accepted input, tenant, resource or data scope, SQL, projection or disclosure, failure behavior, HTTP cache policy, handler query budget or trace, side effects, or audit effects differ. Keep its SQL owner separate when data scope or SQL differs. Do not share an existing independently meaningful typed business or transaction operation, including any typed operation seam, when its typed input, data scope or SQL, transaction or concurrency policy, result contract, side effects, or audit effects differ. A route or method difference alone does not require duplicating an otherwise identical handler or operation. A directory, namespace, route prefix, or route-list label never establishes authority; every protected route retains its explicit action-specific request policy and scoped protected work. Stable domain values and genuine invariants may be shared. Narrowly typed authentication, tenant-resolution, or denial implementations may be shared when their contracts are identical, while every protected named action retains its own action-specific authorization contract. Share one existing independently meaningful typed business or transaction operation, including any typed operation seam, only when its complete responsibility remains identical and each surface reaches it only after its own applicable validation and, when protected, current authorization. Do not put role, audience, mode, or permission branching inside a shared handler or business operation to select SQL, behavior, side effects, or disclosure. Do not add a superset projection filtered for another surface or SQL broader than the receiving surface's recorded contract. Do not add generic services or repositories, discovery, or automatic binding. Do not impose a forced surface directory hierarchy.
+
+If existing identifier classes establish a coherent convention, record and preserve it here. Otherwise, follow the optional identifier convention in `vendor/phpthis/framework/docs/request-handling.md`: use separate final readonly domain-specific classes, a private scalar value and constructor, a representation-named boundary factory, an optional generation path only when this application owns it, and an explicit representation accessor. Every public construction path preserves the complete adopted acceptance invariant; validate each supplied value independently, and make generated values satisfy the separately recorded generated-version policy in `.ai/data.md`. Inspect the nearest identifier using the same representation before adding another. Do not replace nominally distinct identifiers with a generic `Id`, base class, trait, generic identifier interface, or framework helper merely because their implementations resemble one another. After this application records the same complete representation invariant for multiple identifiers, those concrete types may explicitly compose one narrowly named application-owned representation primitive for shared validation and canonical scalar representation; generation remains a separate explicitly versioned policy, and operations still require the concrete domain identifier, never the shared primitive. A recorded alternative may replace only property storage and visibility, constructor visibility, validated construction mechanism, and factory or accessor naming choices. It remains subject to the complete Consumer Contract and Strict Profile, including the final-class requirement, independent boundary validation, and distinct concrete route-specific domain types. This convention selects no generator, algorithm, package, exception type, or persistence representation.
+
 ## Placement rules
 
-- Group routes in narrowly named `src/*Routes.php` route-area classes.
+- Group routes in narrowly named `src/*Routes.php` route-area classes. A qualifying dependency-free simple endpoint may be constructed inline only in an existing named route-area manifest so the root `Routes::create()` remains unchanged; every handler with a constructor dependency stays visibly constructed in the root and passed into its route area.
 - Place handlers at `src/*Handler.php`.
 - Add commands and projections only at explicit external-data boundaries.
 - Keep terminal coordinator, summary, source, correlation, and sink types under `src/Observability/` and wire them manually in `bootstrap.php`.

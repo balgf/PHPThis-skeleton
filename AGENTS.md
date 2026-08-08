@@ -1,74 +1,49 @@
 # AI coding instructions for this PHPThis application
 
-This file is the universal entrypoint for AI-authored changes in this application.
+This file is the universal entrypoint for AI-authored changes in the checked health-only starter. Concern-specific rules live in the current guide routed by `.ai/README.md`; do not copy them into this universal entrypoint.
 
-Before product feature work, replace the skeleton's generic facts in `.ai/project.md`, `.ai/architecture.md`, `.ai/data.md`, `.ai/integrations.md`, and `.ai/operations.md` with verified application facts or explicit not-applicable statements.
+Before product feature work, replace generic starter facts in the applicable `.ai/` guides with verified application facts or explicit not-applicable statements.
 
 ## Authoring model
 
-You are the primary code author and knowledge interface for this application. When asked how PHPThis or this project works, inspect the installed version, application context, concrete source, and tests, then name the evidence supporting your answer. Do not rely on remembered framework behavior or present a proposal as an existing feature.
+You are the primary code author and knowledge interface for this application. Answer from the installed framework version, current application context, concrete source, and tests, and name that evidence. Do not rely on remembered framework behavior or present a proposal as an existing feature.
 
-The human supplies intent and remains accountable for the outcome. Surface missing facts and consequential product, architecture, security, data, migration, deployment, and external-side-effect choices for human judgment. You may investigate options and draft a decision record. Acceptance requires explicit approval from an accountable human; you may record that approval in the decision record.
+The human supplies intent and remains accountable. Surface unresolved product, architecture, security, data, migration, deployment, and external-side-effect choices for human judgment. You may draft a decision record, but only an accountable human may accept it.
 
 ## Early database setup gate
 
-Apply this gate before the full task read order when a request selects or sets up a database engine but leaves either database scope or migration scope unresolved. Inspect only the prompt and current application context needed to avoid repeating an existing accepted decision, then ask one concise combined clarification: configuration only, connection to an existing server, or project-local server provisioning; and deferred migrations or an application-owned migration foundation. Local development is context, not authorization to connect to or probe a server, install, provision, or mutate anything. A current `NOT_APPLICABLE` marker describes present behavior and does not resolve intent for a new adoption request. After the human resolves the scope, resume the normal read order and load only the selected path. An explicit request proceeds without a redundant scope question. `.ai/change-workflow.md` contains the complete gate.
+When a request selects or sets up a database engine but leaves database scope or migration scope unresolved, inspect only the prompt and current application facts needed to avoid repeating an accepted decision. Ask one combined clarification: configuration only, connection to an existing server, or project-local server provisioning; and deferred migrations or an application-owned migration foundation. Local development is context, not authorization to connect to or probe a server, install, provision, or mutate anything. Resume the ordinary read order after scope is resolved. An explicit request proceeds without a redundant question; `.ai/change-workflow.md` owns the complete gate.
 
 ## Read order
 
-1. Read `vendor/phpthis/framework/docs/consumer-contract.md`.
-2. Read `vendor/phpthis/framework/docs/knowledge-map.md`.
+1. Read installed `vendor/phpthis/framework/docs/consumer-contract.md`.
+2. Read installed `vendor/phpthis/framework/docs/knowledge-map.md`.
 3. Read `.ai/README.md`.
-4. Read `.ai/rules.md` and `.ai/change-workflow.md`.
-5. Read only the task-specific guide selected by `.ai/README.md`.
-6. Inspect the concrete source and tests on the execution path.
+4. Read `.ai/rules.md`, `.ai/change-workflow.md`, and `.ai/project.md`.
+5. Start with the one current operational guide selected by `.ai/README.md`.
+6. Inspect the concrete source and nearest tests on the execution path.
 
-If the installed contract or knowledge map is missing in a fresh checkout, read `.ai/operations.md` only far enough to install dependencies, then restart this read order. If either remains unavailable, report the missing dependency instead of inventing framework behavior. Do not substitute the framework-maintainer `AGENTS.md` or `.ai/` directory for this application context.
+If installed framework context is missing, read `.ai/operations.md` only far enough to install dependencies, then restart this order. If Composer uses a non-default vendor directory, replace the leading `vendor/` segment in every installed path. Never substitute a framework-maintainer checkout for installed application authority.
+
+Ordinary implementation starts with one current operational guide. Read an ADR only when reviewing or changing the decision it records; do not load historical ADRs merely to apply the current guide.
+
+## Authority and safety
+
+- Consumer Contract v11 and Strict Profile v3 are the minimum accepted rules.
+- Application `.ai/` guides add verified project facts and may strengthen but never weaken the installed contract.
+- Preserve the installed contract when project guidance conflicts, report the conflict, and distinguish installed behavior, application policy, and proposals.
+- Never invent product intent, human approval, external-system facts, or unsupported PHPThis behavior.
+- Never copy credentials, tokens, private keys, customer data, production payloads, or other secrets into context, source comments, fixtures, logs, or reports.
+
+## Universal red lines
+
+- Keep PHP direct, strictly typed, final, and manually composed; use interfaces for extension points.
+- Keep routes, dependencies, I/O, failures, and resource bounds explicit.
+- Do not add runtime discovery, reflection wiring, a service container, ORM, query builder, repository layer, facade, global helper, hidden fallback, or a second application pattern.
+- Do not suppress the installed profile or replace application-owned behavior tests with static analysis or documentation.
 
 ## Project gate
 
-Run `composer check` from the application root. A task is not complete until it passes. Focused behavior tests may shorten the repair loop but do not replace the complete check.
+Run `composer check` from the application root. A task is not complete until it passes. Focused tests may shorten the repair loop but never replace the complete check.
 
-Every observable behavior change must add or update application-owned automated tests. The application owns the test library, runner, file placement, and organization. Static analysis, documentation, manual verification, and a no-op test command do not satisfy this requirement.
-
-## Authority
-
-- The installed PHPThis Consumer Contract v10 and Strict Profile v3 are the minimum accepted rules, including the PHP 8.4 runtime boundary, one typed application configuration boundary with PHT007, bounded multiple-typed routing, optional bounded application-owned request-handler decorators, explicit cookie/session and file-transfer boundaries, PHT006 finite compile-time-constant SQL, and the application-owned terminal request summary.
-- This application's `.ai/` guides add project-specific facts and may strengthen those rules.
-- Preserve the installed contract when a project instruction conflicts with it, and report the conflict.
-- Distinguish installed framework behavior, application policy, and new proposals in explanations and implementation reports.
-- Never add a baseline, suppression, hidden fallback, or second framework pattern to make a change pass.
-
-`NOT_APPLICABLE(RESOURCE_ROUTE_IDENTIFIERS)`: the health-only starter has no path parameter or resource lookup. Before adding one, choose the narrowest fixed declaration: `positive-int`, `uuid`, or `ulid` for that canonical representation, and `token` only for a genuinely opaque identifier. Read it through the matching `PathParameters::positiveInteger()`, `uuid()`, `ulid()`, or `token()` accessor, immediately wrap the unchanged value in an application-owned route-specific identifier, and apply narrower domain rules before database work. Routing performs no normalization, domain binding, record lookup, identifier generation, persistence choice, or type fallback. Tests must prove invalid syntax selects `404` with zero handler and database work, while a canonical valid path with the wrong method selects `405`.
-
-`NOT_APPLICABLE(REQUEST_HANDLER_DECORATOR)`: the health-only starter composes `HealthHandler` directly and has no application-owned request-handler decorator. Before adding one, record in `.ai/architecture.md` and `.ai/testing.md` its final class, exactly one downstream `RequestHandler`, affected routes, visible unrolled nesting order, zero-or-one delegation with the exact same immutable `Request` instance, unchanged exception propagation, explicit immutable `Response` replacement and complete field preservation, and every named bounded side effect. Do not add a generic or framework middleware interface, pipeline, iterable registry, priorities, discovery, `$next` abstraction, context bag, hidden binding, or hidden I/O, and do not wrap `Application`, `RequestBoundary`, the terminal coordinator, or `ResponseEmitter`.
-
-`NOT_APPLICABLE(DATABASE)`: before introducing database work, replace the exact standalone declaration in `.ai/data.md` with the database definition or provisioning source; database, catalog, schema, or attachment namespace selection and qualification as supported by the chosen engine; and the namespace and object control or ownership model, with explicit not-applicable facts where the engine has no such model. Record verified SQL-structure and bounded-list choices, each named operation's exact statements, targets, required and prohibited capabilities, the effective authority resolution source, one non-HTTP activation and deactivation owner and path, and dated exact-engine evidence. Effective authority mechanisms are recorded only when applicable and may include direct privileges, roles or inheritance, public or default access, database or global privileges, ownership chains, IAM, or filesystem and process authority. Record `GRANT` or `REVOKE` only where supported. Configuration, connectivity, target existence, and migration completion do not activate authority. Activate and verify it before dependent traffic, then drain or remove dependent code before authority deactivation or namespace and object removal. Record isolated migration or administrative authority only when that elevated path is adopted.
-
-`NOT_APPLICABLE(CONFIGURATION)`: the health-only starter reads no deployment setting or secret. Before adding one, read installed `vendor/phpthis/framework/docs/configuration.md` and replace `.ai/configuration.md` with the one reading file, exact names without values, adopted process-specific final readonly types, validation bounds, applicable authority separation, rotation, redaction, and child-process parser or adopted-entrypoint tests. Record visible injection sites for adopted infrastructure, or explicitly defer connection composition when configuration-only scope stops before it. Do not add a generic configuration bag, helper, facade, container binding, automatic dotenv loader, or secret-manager abstraction.
-
-`NOT_APPLICABLE(INPUT)`: the health-only starter accepts no application-owned body, query, form, or header fields and creates no operation command. Before an operation accepts external data, record its raw source, complete bounds, absent-versus-null and unknown-field policy, exact canonical representations, field-specific normalization or explicit lack of normalization, typed request or command, downstream behavior or justified typed seam, parser position relative to request policy, generic failure contract, and duplicate-key proof limit in `.ai/architecture.md`; prove in `.ai/testing.md` that invalid input performs no operation-owned downstream I/O or mutation and makes zero typed-seam calls when one exists. Separately bound any policy work ordered before parsing. Do not add a generic validator, string-rule language, automatic hydration, mass assignment, or sanitization magic.
-
-`NOT_APPLICABLE(WEBSOCKETS)`: the health-only starter has no WebSocket runtime or process. Before adoption, read installed `vendor/phpthis/framework/docs/websockets.md`, obtain approval for the security and operational policy, and replace the marker in `.ai/websockets.md`. Keep the selected mature third-party runtime, separate process, handshake, current authentication and authorization, bounded typed command and operation, sequential send path, connection and lifecycle limits, redacted summary, supervisor, scaling decisions, and real process/socket evidence application-owned. Frames never become PHPThis HTTP `Request` or `Response` values. Do not add core WebSocket primitives, HTTP adaptation, generic middleware, gateways, channels, broadcasters, pub/sub, context, discovery, hidden retry, replay, acknowledgement, resume, or exactly-once claims.
-
-`NOT_APPLICABLE(FILE_TRANSFER)`: the health-only starter has no upload or download route, multipart byte limit, temporary-file ownership, application file path, or file-body response. The front controller still forwards PHP's parsed form and file arrays through the terminal coordinator; that wiring does not enable multipart. Before adoption, read installed `docs/file-transfers/README.md` and replace `.ai/file-transfers.md` with the exact accepted routes, limits, metadata treatment, file lifecycle, response headers, failures, redaction, and evidence.
-
-`NOT_APPLICABLE(REQUEST_POLICY)`: the health-only starter has no identity, tenant, or protected action. Before protecting a route, read installed `docs/request-policy.md` and replace the request-policy sections in `.ai/architecture.md` and `.ai/testing.md` with verified principal, tenant, credential, current authorization, disclosure, query-bound, transaction, redaction, and replacement decisions. Use one explicit action-specific adapter; do not replace or obscure it with an application-owned request-handler decorator, generic or framework middleware, a request-context bag, hidden tenant resolution, or an implicit authorization scope.
-
-`NOT_APPLICABLE(SESSION)`: before introducing session-backed behavior, replace the session sections in `.ai/architecture.md`, `.ai/operations.md`, and `.ai/testing.md` with verified typed key ownership, cookie and isolated native-file storage, concurrency and transport evidence, plus each applicable identity, expiry, revocation, and CSRF policy or explicit non-applicability.
-
-The starter's terminal request summary is mandatory rather than optional: preserve its application-owned front-controller coordinator and injected sink, generated 128-bit lowercase-hex correlation ID, `X-Request-ID`, closed redacted event, and exactly one failure-isolated sink invocation attempt. Before database adoption, register every request-scoped connection that can execute in this path through at most eight finite code-owned sources with distinct budgets and traces. Do not move terminal observability into an application-owned request-handler decorator or add framework logging types, generic or framework logging middleware, facades, helpers, discovery, per-query log I/O, hidden instrumentation, or a durable-delivery claim.
-
-`HTTP_CACHE_POLICY(NO_STORE)`: the starter emits explicit `Cache-Control: no-store` on health success, route miss, method rejection, and mapped invalid or oversized input; its generic unknown-failure response emits `Cache-Control: private, no-store`. Preserve those exact policies for every current path. Start a path added later with `no-store`; use `private` or `public` only after its application-owned freshness or revalidation, validators, `Vary`, intermediary topology, observability, and tests are recorded. Do not add a helper, application-owned request-handler decorator, generic or framework middleware default, or response post-processor, and keep this decision separate from server-side data caching.
-
-`NOT_APPLICABLE(CACHE)`: before introducing server-side caching, replace the cache sections in `.ai/architecture.md`, `.ai/data.md`, `.ai/integrations.md`, `.ai/operations.md`, and `.ai/testing.md` with verified narrowly named typed service ownership, backend and topology, versioned environment- and tenant-scoped keys, bounded payloads and finite TTLs, invalidation, stale-refill and failure behavior, stampede ownership, observability, and cold, warm, failure, isolation, stale-refill race, and concurrency evidence. Do not add a generic cache helper or treat cached data as authoritative.
-
-`NOT_APPLICABLE(JOBS)`: before introducing durable deferred work, read installed `docs/jobs.md` and replace `.ai/jobs.md` with verified backend, transaction, envelope, idempotency, lease, retry, dead-letter, worker, supervisor, redaction, and test decisions. Do not add a framework queue, discovery, event bus, transaction callback, worker loop, or exactly-once external-effect claim.
-
-`NOT_APPLICABLE(CLI)`: the health-only starter has no operational application console or scheduled pass. Composer scripts and `vendor/bin/phpthis check` are development gates, not an adopted application CLI. Before adding one, read installed `docs/cli.md` and replace `.ai/cli.md` plus the CLI sections in `.ai/operations.md` and `.ai/testing.md` with the sole console path, finite command and typed-argument map, closed exit and stream contract, fresh composition, explicit clock and cadence, one-pass behavior, same-host lock and topology, supervisor, redaction, and real-console evidence. Do not add application commands to `vendor/bin/phpthis`, command discovery, a service container, scheduler facade, daemon, hidden loop, or distributed-coordination claim.
-
-`NOT_APPLICABLE(MIGRATIONS)`: the health-only starter has no database, migration path, or migration directory. Before adopting one, read installed `docs/migrations.md` and replace `.ai/migrations.md` plus the migration sections in `.ai/data.md`, `.ai/operations.md`, and `.ai/testing.md` with the actual adopted source directory and namespace, exact engine and accepted engine-specific decision, sole console command, exact required and prohibited elevated capabilities, authority activation and deactivation owner and path, final concrete coordinator, finite ordered manifest and unrolled private step methods, permanent identifiers, checksum source, bounded ledger, per-migration transaction, same-host lock, immutable forward recovery, runtime-authority activation handoff, release order through exact-engine verification, rollout and traffic, later authority deactivation, finite redacted output, and complete real-console evidence. For a first adoption with no established application structure, PHPThis recommends `src/Database/Migrations/` and `App\Database\Migrations`. A coherent consumer-selected alternative is authoritative, is not checker-enforced or discovered, and must not be relocated by AI without explicit human approval. Record `GRANT` or `REVOKE` only where supported. Never run migrations or authority transitions during HTTP startup or add a framework migration API, per-migration classes, schema builder, DSL, discovery, runtime `.sql` loading, generic database facade, permission helper, role registry, inferred rollback, database call in a loop, or cross-engine claim.
-
-## Context safety
-
-Do not write credentials, tokens, private keys, customer data, production payloads, or secrets into AI context, source comments, fixtures, logs, or reports. Use documented secret references and redacted examples.
+Every observable behavior change must add or update application-owned automated tests. The application owns their library and organization; a no-op test command is not evidence.
