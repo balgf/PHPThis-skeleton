@@ -7,6 +7,8 @@
 - Local start command: `php -S 127.0.0.1:8080 -t public`
 - Local stop action: stop the foreground development server.
 - Required local services: none.
+- Local environment launcher: `NOT_APPLICABLE(LOCAL_ENVIRONMENT_LAUNCHER)`; the starter has no launcher PHP file, selected process profile, or local configuration file.
+- Production configuration delivery: `NOT_APPLICABLE(no deployment policy)`; no local launcher or file may be inferred as a production path.
 
 ## Runtime
 
@@ -21,6 +23,8 @@
 ## Configuration runtime
 
 `.ai/configuration.md` is the single writable configuration authority and currently records `NOT_APPLICABLE(CONFIGURATION)`: the starter has no deployment input, secret-delivery path, rotation, reload, or configuration-startup failure. Record any later source, factory, validation, injection, profile/input-name/credential separation, failure, rotation/restart, redaction, and configuration-test facts there rather than duplicating them in this operations guide. PHPThis performs no automatic dotenv load, secret-manager lookup, or hidden reload.
+
+If a local environment launcher is later adopted, record here only its explicit PHP CLI invocation, absolute project-root/`PHP_BINARY`/private-child resolution, working-directory behavior, owner, and explicit production non-use. The shared canonical environment reader plus file, key, profile, and precedence facts remain in `.ai/configuration.md`; command handoff remains in `.ai/cli.md`; tests remain in `.ai/testing.md`. Do not add a launcher until configuration and a real process profile are selected.
 
 ## Session runtime
 
@@ -44,7 +48,7 @@
 
 ## Durable-job runtime
 
-`NOT_APPLICABLE(JOBS)`: the starter has no job table, worker process, supervisor, timeout, forced termination, restart, clean-stop, capacity, retention, dead-letter inspection, replay, or incident policy. Before adoption, record those verified application-specific facts here and the transaction, envelope, idempotency, lease, retry, redaction, and evidence contract in `.ai/jobs.md`. Repetition must come from a supervisor starting fresh one-delivery processes, never an in-process polling or retry loop.
+`NOT_APPLICABLE(JOBS)`: the starter has no job table, outbox, broker, worker process, supervisor, timeout, forced termination, restart, clean-stop, concurrency, prefetch, backpressure, capacity, retention, terminal inspection, replay, or incident policy. Under accepted ADR 052, an adoption records the exact selected finite-work or bounded long-running process shape, concurrency, prefetch or backpressure, supervision, shutdown, deployment replacement and recovery without importing another backend's lifecycle. It also records the selected service/application time owner and exact units/rounding/precision/skew for visibility, lease, TTL, delay, retry and retention, plus unique-run cleanup, finite abandoned-run lifetime and run-ID-scoped stale-run reconciliation because hard termination may skip `finally`. Only deliberate adoption of the current ADR 024 checked SQLite profile uses its externally supervised fresh one-delivery process shape. Record the selected publication, envelope, effect/idempotency, retry/terminal, redaction and evidence contract in `.ai/jobs.md`; never add a hidden polling or retry loop, broad cleanup, discovery, or unrecorded signal behavior.
 
 ## Application CLI and scheduler
 
@@ -76,10 +80,11 @@ Record here, keyed by stable history name or explicit intersecting-history set, 
 - Database sources are `NOT_APPLICABLE(no database)`; query aggregates remain zero and the source list remains empty.
 - HTTP cache storage and revalidation metrics are `NOT_APPLICABLE(no-store responses only)`; behavior tests verify the emitted policy, while production intermediary verification remains deployment-owned.
 - Cache-operation summaries and hit, miss, failure, invalidation, and stampede metrics are `NOT_APPLICABLE(CACHE)`.
+- Optional operational log record, levels, daily file, selected stdout/stderr stream, and Grafana delivery are `NOT_APPLICABLE(OPERATIONAL_LOG_RECORD)` as recorded in `.ai/observability.md`. The starter creates, reserves, and ignores no log directory and has no log rotation, retention, file permission, collector, Loki or Grafana tenant/account, remote lifecycle, region/data-residency, access, or incident operations policy.
 
 Before adopting this route as a deployment probe, record and verify every synchronous destination, including the terminal sink. Before adding a connection that requires an external service or other required external-service I/O to the shared HTTP composition root, reclassify every affected probe and update `.ai/operations.md` and `.ai/testing.md` with its exact claim, inherited dependencies, bounded work, composition or dependency failure behavior, local or deployment operations owner, and evidence. `Connection::connect()` constructs PDO eagerly and may fail during composition; whether it requires an external service depends on the selected driver and DSN. In the current front-controller shape, that failure occurs outside the terminal request-summary coordinator and receives none of its response, correlation-header, or summary guarantees. Do not preserve a liveness claim through a hidden bypass or second HTTP execution path.
 
-The sink invocation attempt does not guarantee durable delivery. `.ai/observability.md` owns the current destination and redaction facts.
+The sink invocation attempt does not guarantee durable delivery. `.ai/observability.md` owns the current destination and redaction facts and the optional profile's explicit not-applicable state.
 
 ## Prohibited operational actions
 

@@ -2,7 +2,7 @@
 
 This directory owns current context for the checked health-only starter. Replace only the guides entered by a task with verified project facts before adding product behavior. Keep context committed, concise, and free of secrets.
 
-Consumer Contract v11 and Strict Profile v3 remain mandatory. Application guidance may strengthen them but may not weaken them.
+Consumer Contract v13 and Strict Profile v3 remain mandatory. Application guidance may strengthen them but may not weaken them.
 
 ## Universal entrypoints
 
@@ -29,18 +29,23 @@ An ordinary route change starts with installed `vendor/phpthis/framework/docs/re
 | Add or change a qualifying simple endpoint | installed `vendor/phpthis/framework/docs/request-handling.md` | existing named route-area manifest, dependency-free handler, and nearest behavior test; root route composition remains unchanged |
 | Explain current framework or application behavior | `.ai/architecture.md` | installed knowledge route, execution path, and nearest tests |
 | Change application structure or dependencies | `.ai/architecture.md` | composition root and affected boundary |
+| Define or change a structured JSON resource success representation, including nested child data | installed `vendor/phpthis/framework/docs/frontend-integration.md`, then installed `vendor/phpthis/framework/docs/request-handling.md`; add installed `vendor/phpthis/framework/docs/database.md` when nested data enters an I/O plan | exact application response construction and `Content-Type`, operation-owned `data` and optional `meta` fields, semantic relationship names, fixed bounded query/cache/external-call counts independent of parent-page cardinality, I/O-free mapping and encoding, parent pagination, exact nested decoder fixtures, compatibility decision, `.ai/data.md`, and `.ai/testing.md`; add no generic wrapper, relationship loader, serializer, paginator, or generator |
+| Build or change frontend integration or application-owned HTML rendering | installed `vendor/phpthis/framework/docs/frontend-integration.md` | `.ai/architecture.md`, `.ai/testing.md`, and exact HTTP paths; add other concern guides only when entered |
+| Compose or deliver transactional email | installed `vendor/phpthis/framework/docs/email.md` | `.ai/integrations.md` and the operation-specific composer and transport; add configuration, jobs, operations, and testing context only when entered |
 | Select or set up a database engine | `.ai/change-workflow.md` | prompt and current configuration/data facts before any external action |
 | Change deployment configuration | `.ai/configuration.md` | one environment-reading file, typed values, composition, and parser tests |
+| Adopt or change a local development environment launcher | installed `vendor/phpthis/framework/docs/configuration/local-environment-launcher.md`; add installed `vendor/phpthis/framework/docs/cli.md` when an operational command is exposed | `.ai/configuration.md`, `.ai/operations.md`, `.ai/cli.md`, `.ai/testing.md`, exact PHP launcher and shared canonical `ApplicationEnvironment` reader, ignored local file and profile/key map, array-form private-child handoff with an exact environment and inherited standard streams, production non-use, and real-launcher evidence |
 | Change a non-simple route or request input | installed `vendor/phpthis/framework/docs/request-handling.md` | route manifest and only the application guides for concerns actually entered |
 | Change application data or SQL | `.ai/data.md` | direct call site, authority, exact-engine, adversarial, and scale evidence |
-| Change authentication, tenant, or authorization policy | `.ai/request-policy.md` | action-specific composition, protected work, and denial tests |
-| Change file transfer | `.ai/file-transfers.md` | front controller, storage operation, response path, and transfer tests |
+| Change date, time, timezone, duration, or clock behavior | installed `vendor/phpthis/framework/docs/date-time.md` | exact operation representation; add architecture, configuration, data, CLI, operations, and testing context only when entered |
+| Change authentication, stateless Bearer/JWT/PAT/external-provider, tenant, or authorization policy | `.ai/request-policy.md` | installed `vendor/phpthis/framework/docs/stateless-authentication.md`, action-specific composition, protected work, lifecycle, and denial tests |
+| Adopt, secure, or change file transfer | `.ai/file-transfers.md` as the single authoritative policy, then installed `vendor/phpthis/framework/docs/file-transfers/README.md` | common bounded multipart policy plus exactly one `LOCAL_ADR026` or `AMAZON_S3_ADR053` profile and its complete application evidence |
 | Change an external side effect | `.ai/integrations.md` | named client boundary, failure policy, and contract tests |
 | Change liveness, readiness, deployment, or runtime operation | `.ai/operations.md` | entrypoint, exact probe claim, owners, bounds, and evidence |
-| Change correlation or terminal summaries | `.ai/observability.md` | coordinator, sink, finite database sources, and summary tests |
+| Change correlation or terminal summaries, or adopt optional log levels and destinations | `.ai/observability.md` | coordinator, sink, finite database sources, summary tests, and the starter's explicit `NOT_APPLICABLE(OPERATIONAL_LOG_RECORD)` facts |
 | Change cookie-backed session state | installed `vendor/phpthis/framework/docs/sessions.md` | architecture, operations, and testing facts only when adopted |
 | Change HTTP or server-side caching | installed `vendor/phpthis/framework/docs/caching.md` | response path or data, integration, operations, and testing facts |
-| Change durable deferred work | `.ai/jobs.md` | configuration, producer, worker, operations, and lifecycle tests |
+| Change durable deferred work | `.ai/jobs.md`, then installed `vendor/phpthis/framework/docs/jobs/README.md` | accepted ADR 052 optional common contract and exact selected adoption, or the current accepted ADR 024 checked SQLite profile; exact configuration, publication/recovery, delivery, effect, worker, operations, real-service and complete-gate evidence |
 | Change an application command or scheduled pass | `.ai/cli.md` | console, typed arguments, operations, and real-console tests |
 | Change database migrations | `.ai/migrations.md` | configuration, authority, manifest, ledger, operations, and exact-engine tests |
 | Change application-owned WebSockets | `.ai/websockets.md` | selected runtime, separate process, configuration, operation, and socket tests |
