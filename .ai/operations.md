@@ -89,3 +89,11 @@ The sink invocation attempt does not guarantee durable delivery. `.ai/observabil
 ## Prohibited operational actions
 
 The skeleton authorizes no deployment, shared-data migration, credential rotation, user contact, or external-system mutation. An AI may inspect documented local state and run project checks, but it must not perform any of those actions unless the human explicitly authorizes that exact action after the application records the relevant operational policy.
+
+## Repository verification and release controls
+
+The dedicated skeleton repository runs pinned GitHub Actions with read-only token permissions. `PHP 8.4 validity` validates Composer metadata, installs the committed lock and runs the complete installed `composer check`; `Dependency audit` checks locked production/development dependencies; `Workflow security` audits `.github` with the pinned reviewed analyzer. These are repository checks, not application deployment policy.
+
+The reviewed `.github/rulesets/` payloads require those three exact GitHub Actions contexts on an up-to-date `main`, prevent branch deletion/force pushes and release-tag updates/deletion, and restrict new `v*` tags to administrators. A committed payload does not establish live enforcement: after the workflows pass, verify/apply the approved settings and record their effective state in framework release Issue #81. Immutable releases and the approved signing identity require separate recorded verification before release publication.
+
+This CI-only preparation retains the exact Alpha 7 framework dependency and lock. It does not establish an Alpha 8 skeleton candidate or authorize a tag, package publication or production deployment.
