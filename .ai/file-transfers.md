@@ -6,7 +6,7 @@ NOT_APPLICABLE(FILE_TRANSFER)
 
 The starter accepts no upload and returns no file download. It owns no file-transfer route, multipart field, pre-PHP transfer profile, duplicate-raw-part suitability decision, request-policy path, temporary or durable file root, content parser or scanner, quota, lifecycle operation, file identifier, retained file, authorization rule, CSRF rule, tenant placement, or file-specific response.
 
-`public/index.php` forwards `$_POST` and `$_FILES` through the terminal coordinator so the runtime boundary is explicit. This does not opt the application into file transfers: `bootstrap.php` constructs `RequestReader` without a multipart byte limit, so multipart input remains disabled. The starter claims no effective proxy or web-SAPI upload controls, including no `max_multipart_body_parts` policy, because no file-transfer deployment profile is adopted.
+`public/index.php` forwards only `$_SERVER` and `$_GET` through the terminal coordinator. The reader owns body parsing. This does not opt into file transfers: `bootstrap.php` supplies no `MultipartLimits`, so multipart input remains disabled. Adoption requires the installed multipart and deployment guides, explicit PHP-normalization suitability, and a complete selected storage policy.
 
 The front controller already owns one redacted response-emission failure event. It emits a generic no-store `500` only when output has not started; after partial output it records the event and ends without attempting a second response. This generic outer behavior does not adopt local-file emission or prove file delivery.
 
@@ -34,3 +34,7 @@ Keep selected storage, quota accounting, inspection, cleanup, retention, deletio
 REFERENCE_ONLY(AMAZON_S3_FILE_TRANSFER_GUIDANCE)
 
 ADR 053 and Consumer Contract version 13 accept the optional `AMAZON_S3_ADR053` profile, including its narrow direct-response exception without `nosniff`. The skeleton remains `NOT_APPLICABLE(FILE_TRANSFER)` and contains no AWS package, lock entry, configuration, credential source, client, route, checker, network call, or evidence. The reference marker routes a future deliberate adoption; it does not adopt or prove the profile.
+
+NOT_APPLICABLE(GENERATED_S3_EXPORTS)
+
+The health-only starter generates no artifacts and reads no S3 objects. Optional Contract 22 adoption follows `vendor/phpthis/framework/docs/file-transfers/generated-exports.md` and requires its own real AWS/deployment evidence.
